@@ -3,12 +3,25 @@
  * Module dependencies.
  */
 
-var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
-var http = require('http');
-var path = require('path');
-var Tags = require('./routes/tags')
+var express = require('express'),
+	routes = require('./routes'),
+	user = require('./routes/user'),
+	http = require('http'),
+	path = require('path'),
+	mongoose = require('mongoose'),
+	Tags = require('./routes/tags'),
+	User = require('./routes/User');;
+
+mongoose.connect('mongodb://localhost:27017/test');
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+		console.log('Database opened');
+});
+
+
 
 var app = express();
 
@@ -31,13 +44,14 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+//register routes
+
 app.get('/', routes.index);
-app.get('/users', user.list);
 
-blah = new Tags();
+app.get('/users', User.all);
 
-app.post('/tags/:tagname', blah.addTag);
-app.get('/tags',blah.all)
+app.post('/users/:name/:pass', User.createUser);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
