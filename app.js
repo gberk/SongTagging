@@ -4,13 +4,12 @@
  */
 
 var express = require('express'),
-	routes = require('./routes'),
-	user = require('./routes/user'),
+	routes = require('./controllers'),
 	http = require('http'),
 	path = require('path'),
 	mongoose = require('mongoose'),
-	Tags = require('./routes/tags'),
-	User = require('./routes/User');;
+	User = require('./controllers/User')
+	Library = require('./controllers/Library');
 
 mongoose.connect('mongodb://localhost:27017/test');
 
@@ -51,6 +50,9 @@ app.get('/', routes.index);
 app.get('/users', User.all);
 
 app.post('/users/:name/:pass', User.createUser);
+
+app.get('/api/songList', Library.songList);
+app.post('/api/addSong', Library.addSong);
 
 
 http.createServer(app).listen(app.get('port'), function(){
