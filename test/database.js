@@ -1,4 +1,3 @@
-var assert = require("assert");
 var mongoose = require("mongoose");
 var should = require("should");
 
@@ -23,8 +22,6 @@ describe('Database' ,function(){
 	});
 
 	describe('When dropping a database',function(){
-		it('should drop that database',function(){
-			
-		})
+		it('should drop that database');
 	});
 });

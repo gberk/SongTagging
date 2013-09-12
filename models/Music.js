@@ -20,7 +20,7 @@ var AlbumSchema = new mongoose.Schema({
 
 var SongModel = mongoose.model('Song',SongSchema);
 
-var AlbumModel = mongoose.model('Album' AlbumModel);
+var AlbumModel = mongoose.model('Album', AlbumSchema);
 
 module.exports = {
 	SongModel: SongModel,
