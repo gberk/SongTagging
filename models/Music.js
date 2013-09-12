@@ -14,10 +14,15 @@ var AlbumSchema = new mongoose.Schema({
 	title: String,
 	artist: String,
 	songs: [SongSchema],
-	tags:[]
+	tags:[String]
 })
 
 
 var SongModel = mongoose.model('Song',SongSchema);
 
-module.exports = SongModel;
+var AlbumModel = mongoose.model('Album' AlbumModel);
+
+module.exports = {
+	SongModel: SongModel,
+	AlbumModel: AlbumModel
+}
