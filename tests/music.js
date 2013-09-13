@@ -8,6 +8,13 @@ var MusicModels = require('../models/Music');
 var Song = MusicModels.SongModel;
 var Album = MusicModels.AlbumModel;
 
+var test_song = {
+    title: 'test_title',
+    artist: 'test_artist',
+    album: 'test_album',
+    tags: ['one', 'two', 'three']
+};
+
 describe('Library', function () {
     
     before(function () {
@@ -21,27 +28,33 @@ describe('Library', function () {
     beforeEach(function () {
         Song.remove();
         Album.remove();
+
     });
     describe('adding a song', function () {
         it('should add a new song entity to the database', function (done) {
-            var song = {
-                title: 'test_title',
-                artist: 'test_artist',
-                album: 'test_album',
-                tags: ['one', 'two', 'three']
-            };
-
-            var verifySongSaved = function () {
-                Song.find(song, function (err, foundSong) {
+            var verifySongSavedCallback = function () {
+                Song.findOne(test_song, function (err, foundSong) {
                     should.exist(foundSong);
                     done();
                 });
             };
-            Library.saveSong(song, verifySongSaved);
-        });
-    });
 
-    describe('adding a song', function () {
-        it('should add a new song entity to the database');
+            Library.saveSong(test_song, verifySongSavedCallback);
+        });
+
+        it('should add an album if the album does not already exist',function(done){
+
+            Album.findOne({title:test_song.album},function(err,foundAlbum){
+                should.not.exist(foundAlbum);
+                console.log("Album does not exist before adding song");
+            });
+
+            Library.saveSong(test_song,function(){});
+
+            Album.findOne({title:test_song.album},function(err,foundAlbum){
+                should.exist(foundAlbum);
+                done();
+            });
+        });
     });
 });
