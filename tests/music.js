@@ -25,10 +25,15 @@ describe('Library', function () {
         mongoose.connection.close();
     });
 
-    beforeEach(function () {
-        Song.remove();
-        Album.remove();
+    beforeEach(function (done) {
+        Song.remove({}, function (err){
+            if (err) throw err;
+        });
+        Album.remove({},function (err){
+            if (err) throw err;
+        });
 
+        done();
     });
     describe('adding a song', function () {
         it('should add a new song entity to the database', function (done) {
@@ -42,18 +47,33 @@ describe('Library', function () {
             Library.saveSong(test_song, verifySongSavedCallback);
         });
 
-        it('should add an album if the album does not already exist',function(done){
+        it('should have all the correct values', function (done){
+            var verifySongFieldsCallback = function() {
+                Song.findOne(test_song, function (err, foundSong) {
+                    should.exist(foundSong);
+                    
+                    for (var key in test_song)
+                        foundSong[key].toString().should.be.eql(test_song[key].toString());
+
+                    done();
+                });
+            };
+
+            Library.saveSong(test_song, verifySongFieldsCallback);
+        });
+
+        it('should add an album if the album does not already exist', function (done){
 
             Album.findOne({title:test_song.album},function(err,foundAlbum){
                 should.not.exist(foundAlbum);
-                console.log("Album does not exist before adding song");
             });
 
-            Library.saveSong(test_song,function(){});
+            Library.saveSong(test_song, function(err,song){
+                Album.findOne({title:song.album},function(err,foundAlbum){
+                    should.exist(foundAlbum);
 
-            Album.findOne({title:test_song.album},function(err,foundAlbum){
-                should.exist(foundAlbum);
-                done();
+                    done();
+                });
             });
         });
     });

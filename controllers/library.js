@@ -18,8 +18,27 @@ exports.addSong = function (req, res) {
     saveSong(req.body, callback);
 }
 
+exports.saveAlbum = function(albumParams, callback){
+    var album = new Album(albumParams);
+
+    album.save(callback);
+}
+
 exports.saveSong = function (songParams, callback) {
+    var album = new Album({artist:songParams.artist,title:songParams.album});
     var song = new Song(songParams);
 
-    song.save(callback());
+    Album.findOne(album,function(err,foundAlbum){
+        if (!foundAlbum) {
+            album.save(function(err,savedAlbum){
+                if (err) throw err;
+                song.albumId = savedAlbum.id;
+                song.save(callback);
+            });
+        }
+        else{
+            song.albumId = foundAlbum.albumId;
+            song.save(callback);
+        }
+    });
 }
