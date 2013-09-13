@@ -20,8 +20,6 @@ db.once('open', function callback () {
 		console.log('Database opened');
 });
 
-
-
 var app = express();
 
 // all environments
