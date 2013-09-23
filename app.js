@@ -9,7 +9,8 @@ var express = require('express'),
 	path = require('path'),
 	mongoose = require('mongoose'),
 	User = require('./controllers/User')
-	Library = require('./controllers/Library');
+	Library = require('./controllers/Library'),
+    jade = require('jade');
 
 mongoose.connect('mongodb://localhost:27017/test');
 
@@ -24,8 +25,8 @@ var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.set('views', __dirname + '/public/views');
+app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -44,6 +45,10 @@ if ('development' == app.get('env')) {
 //register routes
 
 app.get('/', routes.index);
+
+app.get('/speechtests', function(req,res){
+    res.render('voicetest');
+});
 
 app.get('/users', User.all);
 
