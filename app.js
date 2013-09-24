@@ -42,12 +42,15 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-//register routes
 
 app.get('/', routes.index);
 
 app.get('/speechtests', function(req,res){
-    res.render('voicetest');
+    res.render('speechtests');
+});
+
+app.get('/playsong', function(req,res){
+    res.render('playsong');
 });
 
 app.get('/users', User.all);
@@ -57,6 +60,12 @@ app.post('/users/:name/:pass', User.createUser);
 app.get('/api/songList', Library.songList);
 app.post('/api/addSong', Library.addSong);
 
+app.get('/api/search/:songName', function(req,res){
+    Spotify.search(function(err,val){
+        console.log("Search spotify and found " + val);
+        res.end(val);
+    });
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
