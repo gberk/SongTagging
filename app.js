@@ -60,7 +60,7 @@ app.post('/users/:name/:pass', User.createUser);
 app.get('/api/songList', Library.songList);
 app.post('/api/addSong', Library.addSong);
 
-app.get('/api/search/:songName', function(req,res){
+app.get('/api/search/', function(req,res){
     Spotify.search(function(err,val){
         console.log("Search spotify and found " + val);
         res.end(val);

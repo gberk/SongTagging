@@ -29,7 +29,6 @@ var lastResult = "blah";
 $(function(){
     $('.result').hide();
     $('#speechInput').on("focus",searchEntered);
-    //spotifyTrackSearch("The Mother We Share");
 });
 
 
