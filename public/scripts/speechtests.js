@@ -30,12 +30,3 @@ $(function(){
     $('.result').hide();
     $('#speechInput').on("focus",searchEntered);
 });
-
-
-/*
-var recognition = new webkitSpeechRecognition();
-recognition.continuous = false;
-recognition.interimResults = false;
-
-recognition.onEnd = searchEntered;
-*/
